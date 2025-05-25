@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini “2.5 Pro” 進化ヤバすぎ！爆速制作体験レポ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #0A192F; /* Dark Navy Blue */
+            color: #CCD6F6; /* Lightest Blue/Almost White for text */
+            scroll-behavior: smooth;
+        }
+        /* Color Palette: Futuristic & Techy
+           Background: #0A192F (Dark Navy Blue)
+           Primary Text: #CCD6F6 (Lightest Blue)
+           Headings/Accent 1: #64FFDA (Bright Mint Green)
+           Accent 2 / Borders: #7DD3FC (Light Sky Blue)
+           Card Background: #112240 (Slightly Lighter Navy)
+        */
+        .heading-main { color: #64FFDA; } /* Bright Mint Green */
+        .heading-sub { color: #64FFDA; }
+        .accent-text { color: #7DD3FC; } /* Light Sky Blue */
+        .accent-border { border-color: #7DD3FC; }
+        .highlight-text { color: #64FFDA; font-weight: 900; }
+
+        .card {
+            background-color: #112240; /* Slightly Lighter Navy */
+            border-radius: 0.5rem;
+            border: 1px solid #1E3A5F; /* Darker border for depth */
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 30px -10px rgba(100, 255, 218, 0.2), 0 15px 20px -10px rgba(100, 255, 218, 0.1);
+        }
+        @media (min-width: 640px) {
+            .card {
+                padding: 2rem;
+            }
+        }
+        .icon-bullet {
+            color: #64FFDA; /* Bright Mint Green */
+            margin-right: 0.75em;
+            font-size: 1.2em;
+            min-width: 20px;
+        }
+
+        .animated-section {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animated-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .workflow-step {
+            background-color: #112240;
+            border: 1px solid #1E3A5F;
+            border-left-width: 4px;
+            border-left-color: #64FFDA;
+            transition: background-color 0.3s ease, border-left-color 0.3s ease, opacity 0.5s ease-out, transform 0.5s ease-out;
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            cursor: pointer;
+        }
+        .workflow-step.visible {
+             opacity: 1;
+             transform: scale(1) translateY(0);
+        }
+        .workflow-step:hover {
+            background-color: #1A2C4F;
+            border-left-color: #7DD3FC;
+        }
+        .workflow-step .description {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, padding 0.5s ease-out, opacity 0.5s ease-out;
+            padding-top: 0;
+            padding-bottom: 0;
+            opacity: 0;
+        }
+        .workflow-step.active .description {
+            max-height: 100px; /* Shortened description needs less height */
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+            opacity: 1;
+        }
+        .list-item-reveal {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .list-item-reveal.visible {
+            opacity: 1;
+            transform: translateX(0px);
+        }
+        #backToTopBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #64FFDA;
+            color: #0A192F;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(100, 255, 218, 0.3);
+        }
+        #backToTopBtn:hover {
+            background-color: #52D9C0;
+            transform: scale(1.1);
+        }
+        #backToTopBtn.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .header-scrolled {
+            background-color: rgba(10, 25, 47, 0.85) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px -10px rgba(2,12,27,0.7) !important;
+        }
+        .achievement-card {
+            background: linear-gradient(145deg, #1A2C4F, #112240);
+            border: 1px solid #64FFDA;
+            min-height: 160px; /* Adjusted height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .achievement-card i {
+            transition: transform 0.3s ease-in-out;
+        }
+        .achievement-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+        }
+        .punchy-title {
+            font-weight: 900; /* Black weight */
+            letter-spacing: -0.025em; /* Slightly tighter */
+        }
+    </style>
+</head>
+<body class="antialiased leading-relaxed">
+
+    <header id="mainHeader" class="bg-[#0A192F] text-primary py-6 sm:py-8 shadow-lg sticky top-0 z-50 animated-section transition-all duration-300">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black heading-main tracking-tight punchy-title">Gemini “2.5 Pro”<br class="sm:hidden"><span class="accent-text">進化ヤバすぎ！</span><br>爆速制作体験レポ</h1>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 mt-8">
+
+        <section id="intro" class="mb-16 animated-section">
+            <div class="card text-center">
+                <h2 class="text-2xl sm:text-3xl font-bold heading-sub mb-6 punchy-title">
+                    <i class="fas fa-bolt icon-bullet"></i>もはや革命！Gemini “2.5 Pro”の衝撃
+                </h2>
+                <p class="text-lg sm:text-xl mb-4">
+                    皆さん、Gemini “2.5 Pro”、もう体験しました？<br>
+                    僕はこの進化で、コンテンツ制作が<strong class="highlight-text text-2xl">異次元のスピード</strong>になりました！<br>今日はその<strong class="highlight-text text-2xl">「ヤバさ」</strong>をシェアします！
+                </p>
+                <p class="mt-4 text-lg">アイデアから公開までが、<strong class="highlight-text">本当に、一瞬。</strong></p>
+            </div>
+        </section>
+
+        <section id="achievements" class="mb-16 animated-section">
+            <div class="card">
+                <h2 class="text-2xl sm:text-3xl font-bold heading-sub mb-8 text-center punchy-title">
+                    <i class="fas fa-star-of-life icon-bullet"></i>Geminiと僕の「爆速」成果物！
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+                    <div class="achievement-card p-4 rounded-lg list-item-reveal text-center">
+                        <i class="fas fa-magnifying-glass-chart fa-3x mb-3 accent-text"></i>
+                        <h3 class="text-lg font-semibold heading-sub">市場調査レポート</h3>
+                        <p class="text-xs mt-1">詳細分析も一瞬！</p>
+                    </div>
+                    <div class="achievement-card p-4 rounded-lg list-item-reveal text-center">
+                        <i class="fas fa-desktop fa-3x mb-3 accent-text"></i>
+                        <h3 class="text-lg font-semibold heading-sub">本格Webサイト</h3>
+                        <p class="text-xs mt-1">デザインから公開まで！</p>
+                    </div>
+                    <div class="achievement-card p-4 rounded-lg list-item-reveal text-center">
+                        <i class="fas fa-microphone-lines fa-3x mb-3 accent-text"></i>
+                        <h3 class="text-lg font-semibold heading-sub">音声概要</h3>
+                        <p class="text-xs mt-1">ナレ原稿も秒速！</p>
+                    </div>
+                    <div class="achievement-card p-4 rounded-lg list-item-reveal text-center">
+                        <i class="fas fa-person-chalkboard fa-3x mb-3 accent-text"></i>
+                        <h3 class="text-lg font-semibold heading-sub">プレゼンスライド</h3>
+                        <p class="text-xs mt-1">HTMLスライドもサクッと！</p>
+                    </div>
+                </div>
+                <p class="mt-8 text-center font-semibold accent-text text-xl">マジで、想像を超えるスピードでした！</p>
+            </div>
+        </section>
+
+        <section id="reasons" class="mb-16 animated-section">
+            <div class="card">
+                <h2 class="text-2xl sm:text-3xl font-bold heading-sub mb-8 text-center punchy-title">
+                    <i class="fas fa-heartbeat icon-bullet"></i>僕がGeminiを「神ツール」と呼ぶ理由
+                </h2>
+                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-6 text-center">
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-fighter-jet fa-2x mb-2 accent-text"></i><strong class="block heading-sub text-xl">爆速効率化</strong><p class="text-xs mt-1">アイデア即具現化！</p></li>
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-users-cog fa-2x mb-2 accent-text"></i><strong class="block heading-sub text-xl">専門知識ブースト</strong><p class="text-xs mt-1">まるでチーム開発！</p></li>
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-cogs fa-2x mb-2 accent-text"></i><strong class="block heading-sub text-xl">対話で進化</strong><p class="text-xs mt-1">共に創り上げる快感！</p></li>
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-rocket fa-2x mb-2 accent-text"></i><strong class="block heading-sub text-xl">挑戦ハードル激減</strong><p class="text-xs mt-1">失敗恐れず試行錯誤！</p></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="workflow" class="mb-16 animated-section">
+            <div class="card">
+                <h2 class="text-2xl sm:text-3xl font-bold heading-sub mb-8 text-center punchy-title">
+                     <i class="fas fa-shuffle icon-bullet"></i>僕のGemini連携「神速」ワークフロー
+                </h2>
+                <div class="space-y-3">
+                    <div class="workflow-step p-3 sm:p-4 rounded-lg">
+                        <h3 class="text-lg sm:text-xl font-semibold heading-sub flex justify-between items-center">
+                            <span><i class="fas fa-brain icon-bullet"></i>ステップ1: DeepResearch & 分析</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </h3>
+                        <div class="description text-xs sm:text-sm mt-2 text-gray-400">
+                            <p>まずGeminiで秒速リサーチ＆分析！プロジェクトの核を瞬時に把握！</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step p-3 sm:p-4 rounded-lg">
+                        <h3 class="text-lg sm:text-xl font-semibold heading-sub flex justify-between items-center">
+                            <span><i class="fas fa-palette icon-bullet"></i>ステップ2: デザイン & コンテンツ生成</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </h3>
+                        <div class="description text-xs sm:text-sm mt-2 text-gray-400">
+                            <p>Webサイトもスライドも、Geminiがデザイン案から初期コードまで爆速生成！</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step p-3 sm:p-4 rounded-lg">
+                        <h3 class="text-lg sm:text-xl font-semibold heading-sub flex justify-between items-center">
+                           <span><i class="fas fa-microphone-alt icon-bullet"></i>ステップ3: 音声コンテンツ作成</span>
+                           <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </h3>
+                        <div class="description text-xs sm:text-sm mt-2 text-gray-400">
+                            <p>ナレーション原稿も一瞬で完成！音声コンテンツも手間いらず！</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step p-3 sm:p-4 rounded-lg">
+                        <h3 class="text-lg sm:text-xl font-semibold heading-sub flex justify-between items-center">
+                            <span><i class="fas fa-laptop-code icon-bullet"></i>ステップ4: コード編集 & 調整 (VSCode)</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </h3>
+                        <div class="description text-xs sm:text-sm mt-2 text-gray-400">
+                            <p>Gemini生成コードをVSCodeにコピペ！最終仕上げもスピーディー！</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step p-3 sm:p-4 rounded-lg">
+                        <h3 class="text-lg sm:text-xl font-semibold heading-sub flex justify-between items-center">
+                           <span><i class="fab fa-github icon-bullet"></i>ステップ5: GitHubリポジトリ作成</span>
+                           <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </h3>
+                        <div class="description text-xs sm:text-sm mt-2 text-gray-400">
+                            <p>完成したら即GitHubへ！バージョン管理もスマートに！</p>
+                        </div>
+                    </div>
+                    <div class="workflow-step p-3 sm:p-4 rounded-lg">
+                        <h3 class="text-lg sm:text-xl font-semibold heading-sub flex justify-between items-center">
+                           <span><i class="fas fa-globe-asia icon-bullet"></i>ステップ6: GitHub Pagesで公開</span>
+                           <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </h3>
+                        <div class="description text-xs sm:text-sm mt-2 text-gray-400">
+                            <p>最後にGitHub Pagesで世界に発信！公開作業も超簡単！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="tips" class="mb-16 animated-section">
+            <div class="card">
+                <h2 class="text-2xl sm:text-3xl font-bold heading-sub mb-8 text-center punchy-title">
+                    <i class="fas fa-key icon-bullet"></i>Geminiを使い倒す！僕的「秘訣」
+                </h2>
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-bullseye fa-lg mr-2 accent-text"></i><strong class="heading-sub text-lg">指示は超具体的に！</strong><p class="text-xs mt-1">目的・条件・期待値を明確に！</p></li>
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-wrench fa-lg mr-2 accent-text"></i><strong class="heading-sub text-lg">反復改善がキホン！</strong><p class="text-xs mt-1">AI生成は叩き台！対話で神クオリティへ！</p></li>
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-balance-scale-right fa-lg mr-2 accent-text"></i><strong class="heading-sub text-lg">得意と限界を把握！</strong><p class="text-xs mt-1">AIは最強アシスタント！最終判断は人間様！</p></li>
+                    <li class="list-item-reveal p-4 bg-[#1A2C4F] rounded-md"><i class="fas fa-tasks fa-lg mr-2 accent-text"></i><strong class="heading-sub text-lg">作業は細分化！</strong><p class="text-xs mt-1">小ステップ＆こまめFBで手戻り撲滅！</p></li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="conclusion" class="animated-section">
+            <div class="bg-gradient-to-br from-[#112240] to-[#0A192F] border-2 accent-border rounded-lg shadow-xl p-6 sm:p-10 text-center">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-black heading-main mb-6 punchy-title">結論：Gemini “2.5 Pro” は<br><span class="highlight-text text-5xl sm:text-6xl">もはや事件。</span></h2>
+                <p class="text-lg sm:text-xl leading-relaxed mb-6">
+                    リサーチからWeb制作、公開まで…コンテンツ制作の常識が、<strong class="accent-text">完全に覆りました。</strong><br>これはもう、使わない手はないです。
+                </p>
+                <p class="text-xl sm:text-2xl leading-relaxed font-semibold">
+                    皆さんもこの<strong class="highlight-text text-3xl">『ヤバい進化』</strong>を体験して、<br>制作の限界を突破しちゃいましょう！ <i class="fas fa-meteor accent-text"></i>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <button id="backToTopBtn" title="トップへ戻る"><i class="fas fa-arrow-up"></i></button>
+
+    <footer class="text-center py-10 text-sm text-gray-500 animated-section">
+        <p>&copy; 2025 僕のGemini体験レポート</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const mainHeader = document.getElementById('mainHeader');
+            const backToTopBtn = document.getElementById('backToTopBtn');
+            
+            const animatedSections = document.querySelectorAll('.animated-section');
+            const listItemsToReveal = document.querySelectorAll('.list-item-reveal');
+            const workflowSteps = document.querySelectorAll('.workflow-step');
+
+            // --- Header Scroll Effect ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    mainHeader.classList.add('header-scrolled');
+                } else {
+                    mainHeader.classList.remove('header-scrolled');
+                }
+
+                // --- Back to Top Button Visibility ---
+                if (window.scrollY > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            // --- Back to Top Button Click ---
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // --- Intersection Observer Setup ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.05 // Trigger a bit earlier
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        // observer.unobserve(entry.target); 
+                    }
+                });
+            };
+            
+            const listObserverCallback = (entries, observer) => {
+                 entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 100); // Shortened delay
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            };
+            
+            const workflowObserverCallback = (entries, observer) => {
+                 entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.classList.add('visible');
+                        }, index * 150); // Shortened delay
+                        // observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const sectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+            animatedSections.forEach(section => sectionObserver.observe(section));
+
+            const listItemObserver = new IntersectionObserver(listObserverCallback, observerOptions);
+            listItemsToReveal.forEach(item => listItemObserver.observe(item));
+            
+            const workflowStepObserver = new IntersectionObserver(workflowObserverCallback, observerOptions);
+            workflowSteps.forEach(step => workflowStepObserver.observe(step));
+
+            // --- Workflow Accordion ---
+            workflowSteps.forEach(step => {
+                const header = step.querySelector('h3');
+                const icon = header.querySelector('.fa-chevron-down');
+                header.addEventListener('click', (e) => {
+                    // Prevent observer from re-triggering animation on click/layout shift
+                    e.stopPropagation();
+
+                    const currentlyActive = step.classList.contains('active');
+                    
+                    workflowSteps.forEach(otherStep => {
+                        if (otherStep.classList.contains('active')) {
+                            otherStep.classList.remove('active');
+                            const otherIcon = otherStep.querySelector('.fa-chevron-down');
+                            if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    if (!currentlyActive) {
+                        step.classList.add('active');
+                        if (icon) icon.style.transform = 'rotate(180deg)';
+                    } else {
+                         if (icon) icon.style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
